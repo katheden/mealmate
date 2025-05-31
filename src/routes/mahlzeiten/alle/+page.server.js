@@ -1,4 +1,4 @@
-import { getMeals } from '$lib/server/meals.js';
+import { getMeals } from '$lib/db.js';
 
 export async function load() {
   const meals = await getMeals();

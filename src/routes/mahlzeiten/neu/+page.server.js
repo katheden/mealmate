@@ -1,37 +1,32 @@
-import { insertMeal } from '$lib/server/meals.js';
+import { insertMeal, getPersonen } from '$lib/db.js';
+
+export async function load() {
+  const personen = await getPersonen(); // Holt alle Personen aus der DB
+  return { personen };
+}
 
 export const actions = {
   default: async ({ request }) => {
-    const formData = await request.formData();
+    const contentType = request.headers.get('content-type');
 
-    const person = formData.get('person');
-    const date = formData.get('datum');
-    const mealType = formData.get('mealType');
-    const foodName = formData.get('foodName');
-    const calories = formData.get('calories');
-    const imageUrl = formData.get('imageUrl');
+    if (contentType && contentType.includes('application/json')) {
+      const body = await request.json();
 
-    // Beispielobjekt
-    const newMeal = {
-      personName: person,
-      date,
-      meals: [
-        {
-          mealType,
-          items: [
-            {
-              name: foodName,
-              calories: Number(calories),
-              imageUrl
-            }
-          ]
-        }
-      ]
-    };
+      const { personName, date, meals } = body;
 
-    await insertMeal(newMeal);
+      const newMeal = {
+        personName,
+        date,
+        meals
+      };
 
-    return { success: true };
+      await insertMeal(newMeal);
+      return { success: true };
+    } else {
+      return {
+        status: 400,
+        body: { error: 'Unsupported content type' }
+      };
+    }
   }
 };
-

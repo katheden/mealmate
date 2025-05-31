@@ -1,202 +1,263 @@
 <script>
   export let data;
-  console.log("GELADENE DATEN:", data);
+
+  let menuOpen = false;
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+  }
 </script>
 
 <nav class="navbar">
-  <a href="/">Startseite</a>
-  <a href="/mahlzeiten/neu"> Neue Mahlzeit</a>
+  <div class="logo">MealMate</div>
+  <button class="menu-toggle" on:click={toggleMenu} aria-label="Menü öffnen">☰</button>
+  <div class={`nav-links ${menuOpen ? 'open' : ''}`}>
+    <a href="/" class="nav-link">Startseite</a>
+    <a href="/mahlzeiten/neu" class="nav-link">Neue Mahlzeit</a>
+    <a href="/mahlzeiten/personen" class="nav-link">Mates</a>
+  </div>
 </nav>
 
-<h1>Alle Mahlzeiten</h1>
-{#if data.meals?.length > 0}
-  <div class="meals-container">
-    {#each data.meals as personMeal}
-      <div class="meal-card">
-        <div class="meal-header">
-          <span class="person-name">{personMeal.personName}</span>
-          <span class="meal-date"
-            >{new Date(personMeal.date).toLocaleDateString()}</span
-          >
-        </div>
+<div class="page-wrapper">
+  <h1 class="headline">Alle Mahlzeiten</h1>
 
-        {#each personMeal.meals as meal}
-          <div class="meal-section">
-            <div class="meal-type">{meal.mealType}</div>
-            <ul class="meal-items">
-              {#each meal.items as item}
-                <li class="meal-item">
-                  <img class="meal-img" src={item.imageUrl} alt={item.name} />
-                  <div class="meal-item-details">
-                    <span class="meal-item-name">{item.name}</span>
-                    <span class="meal-item-cal">– {item.calories} kcal</span>
-                  </div>
-                </li>
-              {/each}
-            </ul>
+  {#if data.meals?.length > 0}
+    <div class="meals-container">
+      {#each data.meals as personMeal}
+        <div class="meal-card">
+          <div class="meal-header">
+            <a href={`/mahlzeiten/${personMeal._id}`} class="person-name">{personMeal.personName}</a>
+            <span class="meal-date">{new Date(personMeal.date).toLocaleDateString()}</span>
           </div>
-        {/each}
-      </div>
-    {/each}
-  </div>
-{:else}
-  <p>Keine Mahlzeiten gefunden oder Verbindung zur Datenbank fehlgeschlagen.</p>
-{/if}
+
+          {#each personMeal.meals as meal}
+            <div class="meal-section">
+              <div class="meal-type">{meal.mealType}</div>
+              <ul class="meal-items">
+                {#each meal.items as item}
+                  <li class="meal-item">
+                    <img class="meal-img" src={item.imageUrl} alt={item.name} />
+                    <div class="meal-item-details">
+                      <span class="meal-item-name">{item.name}</span>
+                      <span class="meal-item-cal">– {item.calories} kcal</span>
+                    </div>
+                  </li>
+                {/each}
+              </ul>
+            </div>
+          {/each}
+        </div>
+      {/each}
+    </div>
+  {:else}
+    <p class="no-data-text"></p>
+  {/if}
+</div>
 
 <style>
-  :global(body) {
-    background: #f4faef;
-    font-family: "Poppins", "Segoe UI", Arial, sans-serif;
+* {
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #f7fbf9;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #e6faf4;
+  border-radius: 14px;
+  margin: 2rem auto 1.5rem;
+  max-width: 1100px;
+}
+
+.logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #23bf7c;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #23bf7c;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-link {
+  background: #23bf7c;
+  color: white;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.5rem 1.3rem;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(43, 182, 134, 0.15);
+  transition: background 0.2s, transform 0.2s;
+}
+
+.nav-link:hover {
+  background: #168b5b;
+  transform: translateY(-1px);
+}
+
+/* Mobile Menü */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
   }
 
-  .navbar {
+  .nav-links {
+    flex-direction: column;
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: #f6fefb;
+    padding: 1rem 2rem;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .nav-links.open {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.1rem 0 1.1rem 0;
-    background: linear-gradient(90deg, #e5f7ef 0%, #f4faef 100%);
-    border-radius: 0 0 22px 22px;
-    box-shadow: 0 3px 18px rgba(43, 182, 134, 0.07);
-    margin-bottom: 1.3rem;
   }
-  .navbar a {
-    color: #26735a;
-    font-weight: 600;
-    text-decoration: none;
-    font-size: 1.12rem;
-    padding: 0.5rem 1.3rem;
-    border-radius: 999px;
-    transition:
-      background 0.13s,
-      color 0.13s,
-      box-shadow 0.13s;
-    letter-spacing: 0.01em;
-  }
-  .navbar a:hover,
-  .navbar a:focus {
-    background: #2bb686;
-    color: #fff;
-    box-shadow: 0 2px 8px rgba(43, 182, 134, 0.14);
-    outline: none;
-  }
+}
 
-  h1 {
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-bottom: 0.7rem;
-    color: #222;
-    letter-spacing: -2px;
-    text-align: center;
-  }
-  .highlight {
-    color: #2bb686;
-  }
-  .subtitle {
-    font-size: 1.15rem;
-    color: #656565;
-    margin-bottom: 1.8rem;
-    text-align: center;
-  }
+/* Hauptbereich */
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto 3rem auto;
+  padding: 2rem;
+  text-align: center;
+  background: #f7fbf9;
+  border-radius: 24px;
+  border: 1.5px solid #e8f5e5;
+  box-shadow: 0 8px 36px rgba(43, 182, 134, 0.09);
+}
 
-  .meals-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: flex-start;
-    margin-top: 2.5rem;
-  }
+.headline {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #2bb686;
+  margin-bottom: 2rem;
+}
 
-  .meal-card {
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 4px 16px rgba(43, 182, 134, 0.08);
-    padding: 2rem 1.5rem 1.5rem 1.5rem;
-    width: 350px;
-    transition: box-shadow 0.2s;
-    border: 1.5px solid #e8f5e5;
-  }
-  .meal-card:hover {
-    box-shadow: 0 8px 24px rgba(43, 182, 134, 0.2);
-    border-color: #b8efd4;
-  }
+.meals-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+}
 
-  .meal-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-    justify-content: space-between;
-  }
-  .person-name {
-    font-size: 1.45rem;
-    font-weight: 600;
-    color: #2bb686;
-    letter-spacing: -1px;
-  }
-  .meal-date {
-    color: #888;
-    font-size: 1rem;
-    background: #e5f7ef;
-    border-radius: 8px;
-    padding: 0.2rem 0.7rem;
-  }
+/* Kartenstil */
+.meal-card {
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 6px 20px rgba(43, 182, 134, 0.08);
+  padding: 1.8rem;
+  width: 370px;
+  border: 1.5px solid #e8f5e5;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-  .meal-section {
-    margin-bottom: 1.2rem;
-  }
-  .meal-type {
-    font-size: 1.11rem;
-    font-weight: 500;
-    color: #26735a;
-    margin: 0.7rem 0 0.2rem 0;
-    letter-spacing: 0.5px;
-  }
+.meal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(43, 182, 134, 0.18);
+  border-color: #b8efd4;
+}
 
-  .meal-items {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .meal-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.45rem 0;
-    border-bottom: 1px solid #e8f5e5;
-  }
-  .meal-item:last-child {
-    border-bottom: none;
-  }
-  .meal-img {
-    border-radius: 9px;
-    width: 44px;
-    height: 44px;
-    object-fit: cover;
-    background: #e5f7ef;
-    border: 1.5px solid #b8efd4;
-  }
-  .meal-item-details {
-    flex: 1;
-  }
-  .meal-item-name {
-    font-weight: 500;
-    color: #222;
-  }
-  .meal-item-cal {
-    color: #2bb686;
-    font-size: 0.95rem;
-    margin-left: 0.7rem;
-    font-weight: 500;
-  }
+.meal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
 
-  @media (max-width: 900px) {
-    .meals-container {
-      flex-direction: column;
-      align-items: center;
-    }
-    .meal-card {
-      width: 98%;
-    }
-  }
+.person-name {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #23bf7c;
+  text-decoration: none;
+}
+
+.meal-date {
+  background: #e7f8ef;
+  color: #26735a;
+  font-size: 0.95rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 10px;
+}
+
+.meal-section {
+  margin-top: 1.2rem;
+}
+
+.meal-type {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #26735a;
+  margin-bottom: 0.5rem;
+}
+
+.meal-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.meal-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #eaf9f0;
+}
+
+.meal-item:last-child {
+  border-bottom: none;
+}
+
+/* Bilder größer */
+.meal-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 14px;
+  object-fit: cover;
+  background: #e7f8ef;
+  border: 1.5px solid #44b97a;
+}
+
+.meal-item-details {
+  flex: 1;
+  text-align: left;
+}
+
+.meal-item-name {
+  font-weight: 600;
+  color: #222;
+}
+
+.meal-item-cal {
+  color: #2bb686;
+  font-size: 0.95rem;
+}
+
+.no-data-text {
+  font-size: 1.2rem;
+  color: #999;
+  margin-top: 2rem;
+}
 </style>

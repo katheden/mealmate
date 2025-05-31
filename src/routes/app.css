@@ -1,0 +1,183 @@
+:global(body) {
+  background: #e6ffe6;
+  font-family: 'Poppins', Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem 2vw 1rem 2vw;
+  background: linear-gradient(90deg, #26734d 0%, #339966 100%);
+  border-radius: 0 0 18px 18px;
+  box-shadow: 0 2px 8px rgba(50,80,50,0.06);
+  margin-bottom: 2.5rem;
+}
+nav a {
+  color: #f5fff5;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.5em 1.2em;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+  font-size: 1.04em;
+}
+nav a:hover,
+nav a:focus {
+  background: #b6e1c7;
+  color: #26734d;
+}
+
+/* Card-Look für das Formular */
+form {
+  max-width: 480px;
+  background: #fff;
+  margin: 2.5rem auto 0 auto;
+  border-radius: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(44, 86, 67, 0.10);
+  padding: 2.2rem 1.5rem 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+/* Überschrift */
+h1 {
+  text-align: center;
+  color: #26734d;
+  margin-bottom: 1.6rem;
+  font-size: 2rem;
+}
+
+/* Labels & Felder */
+label {
+  font-weight: 600;
+  color: #26734d;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+input,
+select {
+  width: 100%;
+  padding: 0.7em 1em;
+  border: 1.5px solid #b6e1c7;
+  border-radius: 7px;
+  outline: none;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  background: #f4fff7;
+  transition: border 0.18s;
+  box-sizing: border-box;
+}
+input:focus,
+select:focus {
+  border: 1.5px solid #26734d;
+}
+
+.meal-block {
+  background: #f9fff9;
+  border: 1.5px solid #d7f6e1;
+  border-radius: 1rem;
+  padding: 1rem 0.7rem 1.2rem 0.7rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 1px 10px rgba(42,127,98, 0.04);
+  position: relative;
+}
+
+.meal-block h4 {
+  color: #2a7f62;
+  margin: 0.7em 0 0.8em 0;
+  font-size: 1.08rem;
+  font-weight: 600;
+}
+
+/* Lebensmittel-Block */
+.item-block {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.7rem;
+  align-items: center;
+  background: #ecfdf2;
+  border-radius: 8px;
+  padding: 0.7em 0.6em;
+}
+.item-block input[type="number"] {
+  width: 110px;
+}
+.item-block input[type="url"] {
+  width: 180px;
+}
+.item-block input[type="text"],
+.item-block input:not([type]) {
+  min-width: 120px;
+}
+
+/* Entfernen Button */
+.delete-button {
+  background: #ffdede;
+  color: #d11a2a;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2em;
+  width: 2em;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 0.3em;
+  transition: background 0.16s, color 0.16s;
+}
+.delete-button:hover,
+.delete-button:focus {
+  background: #fd9393;
+  color: #fff;
+}
+
+/* Add/Save Button */
+.meal-block button[type="button"],
+form button[type="submit"] {
+  background: linear-gradient(90deg, #2a7f62 70%, #49c6ae 100%);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.5em 1.6em;
+  font-size: 1.01rem;
+  font-weight: 600;
+  margin-top: 0.3em;
+  box-shadow: 0 2px 6px rgba(42, 127, 98, 0.08);
+  cursor: pointer;
+  transition: background 0.19s, color 0.19s;
+}
+.meal-block button[type="button"]:hover,
+form button[type="submit"]:hover,
+.meal-block button[type="button"]:focus,
+form button[type="submit"]:focus {
+  background: linear-gradient(90deg, #257155 60%, #37b99a 100%);
+  color: #e6ffe6;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  form {
+    padding: 1rem 0.4rem;
+    max-width: 97vw;
+  }
+  h1 {
+    font-size: 1.15rem;
+  }
+  .meal-block {
+    padding: 0.7rem 0.2rem;
+  }
+  .item-block input,
+  .item-block input[type="url"],
+  .item-block input[type="number"] {
+    width: 100%;
+    min-width: 0;
+  }
+  
+}
