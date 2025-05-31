@@ -1,38 +1,44 @@
-# sv
+# MealMate
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+**Autor:** Dencey Katheesrupan  
+**E-Mail:** katheden@students.zhaw.ch  
+**Deployte App:** https://mealmated.netlify.app/  
 
-## Creating a project
+## 1. Einleitung
 
-If you're seeing this, you've probably already done this step. Congrats!
+MealMate ist eine Webanwendung zur Erfassung und Verwaltung von Mahlzeiten sowie zur Zuweisung dieser zu Personen („Mates“). Nutzer*innen können Mahlzeiten mit Nährwertangaben wie Kalorien, Eiweiss, Fett und Kohlenhydraten erfassen, anzeigen und verwalten. Die App basiert auf SvelteKit (Runes-Mode) und speichert Daten in MongoDB.
 
-```bash
-# create a new project in the current directory
-npx sv create
+## 2. Datenmodell
+![image](https://github.com/user-attachments/assets/9cf8cd75-3a7a-4f46-bc4a-5d3f460ed83c)
 
-# create a new project in my-app
-npx sv create my-app
-```
 
-## Developing
+## 3. Beschreibung der Anwendung
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### `/`  
+Startseite mit Navigation
 
-```bash
-npm run dev
+### `/mahlzeiten/alle`  
+Mahlzeitenübersicht, gruppiert nach Person  
+Komponenten: `meal-card.svelte`, `meal-item.svelte`
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+### `/mahlzeiten/neu`  
+Formular zur Eingabe einer neuen Mahlzeit  
+Verwendung von Form Actions
 
-## Building
+### `/mahlzeiten/[id]`  
+Detailansicht und Bearbeitung einer Mahlzeit  
+CRUD-Funktionen inklusive Redirect
 
-To create a production version of your app:
+## 4. Erweiterungen
 
-```bash
-npm run build
-```
+- Gruppierung nach Personen
+- Eigenes responsives CSS
+- Formularvalidierung
+- Trennung der DB-Logik (`lib/db.js`)
 
-You can preview the production build with `npm run preview`.
+## 5. Deployment
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- GitHub: https://github.com/katheden/mealmate  
+- Live: https://mealmated.netlify.app  
+- Umgebungsvariablen (DB_URI) über Netlify konfiguriert
+
